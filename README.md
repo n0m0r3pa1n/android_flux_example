@@ -26,6 +26,7 @@ I have implemented them as it follows:
 6. Stores in **Android** (my implementation)
     * We have a BaseStore class which has one available listener - OnChangeListener. BaseStore has a list of listeners implemented and they can be called with the onChange() method.
     * Each store can provide additional listener. I don't think that more than 1 additional in rare cases will be needed.
+    * (**Update 23.05**) Each store can be represented as a custom otto bus. So components don't need to declare interfaces to receive update events.
     * Stores subscribe using the @Subscribe annotation from Otto. They can decide if they want to receive Server or Ui events.
     * Stores filter if the event is about them by the event action string.
 7. Custom components (in **WEB** they are React components) -
