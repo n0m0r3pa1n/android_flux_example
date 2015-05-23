@@ -11,8 +11,9 @@ import android.widget.Toast;
 
 import com.nmp90.androidfluxarchitecture.R;
 import com.nmp90.androidfluxarchitecture.models.App;
-import com.nmp90.androidfluxarchitecture.stores.AppsStore;
+import com.nmp90.androidfluxarchitecture.stores.AppsBusStore;
 import com.nmp90.androidfluxarchitecture.stores.BaseStore;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,8 @@ public class AppsList extends LinearLayout implements BaseStore.OnChangeListener
 
         View view = inflater.inflate(R.layout.view_apps_list, this, true);
         lvAppsList = (ListView) view.findViewById(R.id.lv_apps_list);
-        List<App> apps = AppsStore.getInstance().getData();
+        //TODO: Replace this with AppsStore if you want to use listeners
+        List<App> apps = AppsBusStore.getInstance().getData();
         if(apps != null && apps.size() > 0) {
             onChange();
         }
@@ -63,19 +65,29 @@ public class AppsList extends LinearLayout implements BaseStore.OnChangeListener
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        AppsStore.getInstance().addOnChangeListener(this);
+        //TODO: If you want to try it with listeners uncomment this
+        //AppsStore.getInstance().addOnChangeListener(this);
+        AppsBusStore.getInstance().register(this);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        AppsStore.getInstance().removeOnChangeListener(this);
+        //TODO: If you want to try it with listeners uncomment this
+        //AppsStore.getInstance().removeOnChangeListener(this);
+        AppsBusStore.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void onAppsLoaded(AppsBusStore.AppsLoadedEvent event) {
+        onChange();
     }
 
     @Override
     public void onChange() {
         Toast.makeText(getContext(), "Apps loaded, scroll down", Toast.LENGTH_SHORT).show();
-        List<App> apps = AppsStore.getInstance().getData();
+        //TODO: Replace this with AppsStore if you want to use listeners
+        List<App> apps = AppsBusStore.getInstance().getData();
         List<String> appNames = new ArrayList<String>();
         for(App app : apps) {
             appNames.add(app.getName());
