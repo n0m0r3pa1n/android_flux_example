@@ -8,6 +8,8 @@ First you need to checkout the [Flux](https://facebook.github.io/flux/) architec
 In Flux we have: Actions, Dispatcher, Stores, Custom Components(React Components in example for web) and may be an Utils to generate the actions.
 I have implemented them as it follows:
 
+![Flux architecture diagram](app/docs/diagram.png)
+
 1. Actions - We have a simple actions class containing just a constant. This action constants will help stores recognize if they need to responsed to a given action.
 2. Dispatcher - I have implemented the Otto bus as Dispatcher. It is used just to send events to all stores.
 3. Dispatcher Events in Flux **WEB**  - each object a dispatcher sends contains
